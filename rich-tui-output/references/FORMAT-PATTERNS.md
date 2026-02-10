@@ -5,19 +5,22 @@ Detailed templates for rich TUI formatting. Load this file when building complex
 ## Codex TUI Compatibility Rules
 
 Keep all patterns renderer-safe:
-- No markdown pipe tables (`| col | col |`)
-- Prefer Unicode box tables inside fenced code blocks
+- No markdown tables
+- Option B: prefer Unicode box tables inside fenced code blocks only when strict checks pass
 - Keep visual blocks near 80 columns and avoid overflow
-- Use labeled bullet lists when tabular structure is light
+- Option A: use labeled bullet lists when tabular structure is light or content is long
 
 ## Table Safety Guardrails
 
 Apply these before rendering any Unicode table:
-- Use tables only for short, atomic values.
-- If values include long paths, URLs, model names, or sentence-like text, use labeled bullets.
+- Option B strict table rendering: strip ANSI before width calculation.
+- Option B strict table rendering: use display width, not raw byte/char length.
+- Option B strict table rendering: pre-wrap or truncate cell content to fit column widths.
+- Option B strict table rendering: validate every rendered row equals table width.
 - Never include literal `|` characters inside cell text.
 - Never depend on terminal soft-wrap to preserve borders.
-- If width cannot stay within ~80 columns, switch to bullet or sectioned list format.
+- Automatic fallback: if any cell is long or table cannot fit terminal-safe width (~80 cols), fallback to Option A labeled bullets.
+- Use Option B tables only for short, atomic values.
 
 Safe fallback for long values:
 

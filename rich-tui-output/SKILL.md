@@ -22,7 +22,7 @@ Format every response with visual structure. Make terminal output beautiful and 
 2. **Scannable first** — Users skim before they read; use bold, headers, and boxes to guide eyes
 3. **80-column safe** — All visual elements fit within 80 characters; if they cannot fit, switch format
 4. **Complement rich-diagrams** — This skill handles response formatting; defer to `rich-diagrams` for standalone diagrams, flowcharts, and architecture visuals
-5. **Codex TUI compatible** — Never use markdown pipe tables (`| a | b |`) because they render poorly in the TUI
+5. **Codex TUI compatible** — Never use markdown tables because they render poorly in the TUI
 
 ## Response Profiles
 
@@ -85,16 +85,16 @@ Actionable items, numbered by preference.
 
 ### 4. Tables for Structured Data
 
-Never use markdown pipe tables. Use one of two safe patterns:
+Never use markdown tables. Use one of two safe patterns:
 
-Simple comparison (labeled bullets):
+Option A — labeled bullets (fallback/default for long content):
 ```
 - **Routing**: Tailscale owns mesh routes; WARP owns default internet route
 - **DNS**: Tailscale expects MagicDNS; WARP enforces Gateway DoH
 - **Outcome**: Route and DNS ownership conflict
 ```
 
-Complex structured data (Unicode box table in a code block):
+Option B — Unicode box table in a code block (strict rendering mode):
 ```
 ┌──────────┬──────────────────────────────────────────────┐
 │ Time     │ Event                                        │
@@ -105,12 +105,17 @@ Complex structured data (Unicode box table in a code block):
 └──────────┴──────────────────────────────────────────────┘
 ```
 
-Table safety guardrails (always apply):
-- Keep full table width at or below 80 characters whenever practical.
+Option B strict table rendering (always apply):
+- Strip ANSI before width calculation.
+- Use display width, not raw byte/char length.
+- Pre-wrap or truncate cell content to fit column widths.
+- Validate every rendered row equals table width.
 - Do not place literal `|` characters inside cell content.
-- Do not rely on terminal soft-wrapping; if content does not fit, change format.
-- If any cell is long (paths, URLs, model IDs, multi-clause text), prefer labeled bullets instead of a table.
-- Use Unicode box tables only for short, atomic values (status, counts, short names, timestamps).
+- Do not rely on terminal soft-wrapping.
+
+Automatic fallback:
+- If any cell is long or table cannot fit terminal-safe width (~80 cols), fallback to Option A labeled bullets.
+- Use Option B only for short, atomic values (status, counts, short names, timestamps).
 
 See `references/FORMAT-PATTERNS.md` for more templates.
 

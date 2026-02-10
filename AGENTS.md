@@ -11,7 +11,7 @@ For skill behavior and reusable templates, treat:
 - `rich-tui-output/references/FORMAT-PATTERNS.md` as the pattern library
 
 If examples in different files ever conflict, prefer the most TUI-safe rendering rule:
-1. No markdown pipe tables
+1. No markdown tables
 2. Use Unicode box tables in fenced code blocks
 3. Use labeled bullet comparisons for lightweight cases
 
@@ -27,15 +27,15 @@ If examples in different files ever conflict, prefer the most TUI-safe rendering
 
 2. **Bold key terms** — Always bold service names, file paths, commands, status words, and option labels on first use
 
-3. **Tables — NEVER use markdown pipe tables** (they don't render in the TUI). Instead use one of these formats:
+3. **Tables — NEVER use markdown tables** (they don't render in the TUI). Use this policy:
 
-   **For simple comparisons, use bullet lists with bold labels:**
+   **Option A — Labeled bullets (fallback/default for long content):**
    ```
    - **Routing**: Tailscale wants own routes; WARP wants full internet → Route conflict
    - **DNS**: Tailscale uses MagicDNS; WARP uses Gateway → DNS conflict
    ```
 
-   **For complex tabular data, use Unicode box tables inside code blocks:**
+   **Option B — Unicode box tables (strict rendering mode):**
    ```
    ┌──────────────┬──────────────────┬──────────────────┬────────────────┐
    │  Component   │  Tailscale       │  Cloudflare WARP │  Result        │
@@ -45,11 +45,14 @@ If examples in different files ever conflict, prefer the most TUI-safe rendering
    │  VPN slot    │  Active tunnel   │  Active tunnel   │  OS limit      │
    └──────────────┴──────────────────┴──────────────────┴────────────────┘
    ```
-   Safety rules for Unicode tables:
-   - Keep table width near 80 columns and avoid overflow.
+   Option B strict table rendering:
+   - Strip ANSI before width calculation.
+   - Use display width, not raw byte/char length.
+   - Pre-wrap or truncate cell content to fit column widths.
+   - Validate every rendered row equals table width.
    - Do not place raw `|` characters in cell content.
    - Do not rely on terminal soft-wrapping for row alignment.
-   - If cells are long (paths, URLs, model IDs, sentence-like text), switch to labeled bullets.
+   - Automatic fallback: if any cell is long or table cannot fit terminal-safe width (~80 cols), fallback to Option A labeled bullets.
 
 4. **Numbered options with bold labels** for presenting choices:
    ```
@@ -195,7 +198,7 @@ For standalone diagrams, flowcharts, and architecture visuals, use the `rich-dia
 ### Maintenance Checklist (for instruction edits)
 
 Before finalizing changes to formatting guidance:
-- [ ] No markdown pipe tables were introduced
+- [ ] No markdown tables were introduced
 - [ ] Examples render cleanly in plain terminal width
 - [ ] `AGENTS.md`, `rich-tui-output/SKILL.md`, and `rich-tui-output/references/FORMAT-PATTERNS.md` are consistent
 - [ ] Required status badges and callout box patterns still exist
