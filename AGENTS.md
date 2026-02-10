@@ -45,6 +45,11 @@ If examples in different files ever conflict, prefer the most TUI-safe rendering
    │  VPN slot    │  Active tunnel   │  Active tunnel   │  OS limit      │
    └──────────────┴──────────────────┴──────────────────┴────────────────┘
    ```
+   Safety rules for Unicode tables:
+   - Keep table width near 80 columns and avoid overflow.
+   - Do not place raw `|` characters in cell content.
+   - Do not rely on terminal soft-wrapping for row alignment.
+   - If cells are long (paths, URLs, model IDs, sentence-like text), switch to labeled bullets.
 
 4. **Numbered options with bold labels** for presenting choices:
    ```

@@ -10,6 +10,23 @@ Keep all patterns renderer-safe:
 - Keep visual blocks near 80 columns and avoid overflow
 - Use labeled bullet lists when tabular structure is light
 
+## Table Safety Guardrails
+
+Apply these before rendering any Unicode table:
+- Use tables only for short, atomic values.
+- If values include long paths, URLs, model names, or sentence-like text, use labeled bullets.
+- Never include literal `|` characters inside cell text.
+- Never depend on terminal soft-wrap to preserve borders.
+- If width cannot stay within ~80 columns, switch to bullet or sectioned list format.
+
+Safe fallback for long values:
+
+```markdown
+- **Provider**: Google Gemini (`@google/genai`)
+- **Model**: `gemini-2.5-flash`
+- **Used For**: LinkedIn post, X thread, article draft
+```
+
 ## Unicode Box Styles
 
 ### Standard Box (Single-line)

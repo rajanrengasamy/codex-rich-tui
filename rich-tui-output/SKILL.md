@@ -20,7 +20,7 @@ Format every response with visual structure. Make terminal output beautiful and 
 
 1. **Always format** — Every response gets visual structure, not just special ones
 2. **Scannable first** — Users skim before they read; use bold, headers, and boxes to guide eyes
-3. **80-column safe** — All visual elements fit within 80 characters
+3. **80-column safe** — All visual elements fit within 80 characters; if they cannot fit, switch format
 4. **Complement rich-diagrams** — This skill handles response formatting; defer to `rich-diagrams` for standalone diagrams, flowcharts, and architecture visuals
 5. **Codex TUI compatible** — Never use markdown pipe tables (`| a | b |`) because they render poorly in the TUI
 
@@ -104,6 +104,13 @@ Complex structured data (Unicode box table in a code block):
 │ 10:52:40 │ WARP disconnects: insufficient resource      │
 └──────────┴──────────────────────────────────────────────┘
 ```
+
+Table safety guardrails (always apply):
+- Keep full table width at or below 80 characters whenever practical.
+- Do not place literal `|` characters inside cell content.
+- Do not rely on terminal soft-wrapping; if content does not fit, change format.
+- If any cell is long (paths, URLs, model IDs, multi-clause text), prefer labeled bullets instead of a table.
+- Use Unicode box tables only for short, atomic values (status, counts, short names, timestamps).
 
 See `references/FORMAT-PATTERNS.md` for more templates.
 
