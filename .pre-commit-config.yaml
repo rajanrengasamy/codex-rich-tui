@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-format-docs
+        name: validate-format-docs
+        entry: ./validate-format-docs.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, pre-push]

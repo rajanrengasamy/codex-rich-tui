@@ -1,0 +1,5 @@
+interface:
+  display_name: Rich TUI Output
+  short_description: Beautiful formatted terminal output for every response
+  brand_color: "#06B6D4"
+  default_prompt: "Use $rich-tui-output formatting for this response. Never use markdown pipe tables; use Unicode box tables or labeled bullet comparisons."
